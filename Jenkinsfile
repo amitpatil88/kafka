@@ -20,29 +20,43 @@ pipeline {
     }
     stages {
             stage('SCM Checkout') {
-        	    checkout scm
+        	   steps{
+        	         checkout scm
+        	   }
         	}
 
         	stage('Gradle Version'){
+        	 steps{
         	    sh 'gradle --version'
+        	    }
         	}
 
         	stage('clean') {
+        	 steps{
         	    sh 'gradle clean'
+        	    }
         	}
         	stage ('compile') {
+        	 steps{
         	    sh 'gradle clean compileJava compileScala compileTestJava compileTestScala spotlessScalaCheck checkstyleMain checkstyleTest spotbugsMain rat --profile --no-daemon --continue -PxmlSpotBugsReport=true'
+        	    }
         	}
 
         	stage('Test') {
+        	 steps{
         	    sh 'gradle unitTest --profile --no-daemon --continue -PtestLoggingEvents=started,passed,skipped,failed'
+        	    }
         	}
 
         	stage('BuildJar') {
+        	 steps{
         	    sh 'gradle jar'
+        	    }
         	}
         	stage('BuildSourceJar'){
+        	 steps{
         	    sh 'gradle srcJar'
+        	    }
         	}
     }
 }
