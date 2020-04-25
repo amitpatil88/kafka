@@ -14,29 +14,35 @@
 // limitations under the License.
 
 
-def gradle(command) {
-	sh "./gradlew ${command}"
-}
+pipeline {
+    agent {
+        docker { image 'jdk8-gradle' }
+    }
+    stages {
+            stage('SCM Checkout') {
+        	    checkout scm
+        	}
 
-node {
-	stage('SCM Checkout') {
-	    checkout scm
-	}
-	stage('clean') {
-	    gradle 'clean'
-	}
-	stage ('compile') {
-	    gradle 'clean compileJava compileScala compileTestJava compileTestScala spotlessScalaCheck checkstyleMain checkstyleTest spotbugsMain rat --profile --no-daemon --continue -PxmlSpotBugsReport=true'
-	}
+        	stage('Gradle Version'){
+        	    sh 'gradle --version'
+        	}
 
-	stage('Test') {
-	    gradle 'unitTest --profile --no-daemon --continue -PtestLoggingEvents=started,passed,skipped,failed'
-	}
+        	stage('clean') {
+        	    sh 'gradle clean'
+        	}
+        	stage ('compile') {
+        	    sh 'gradle clean compileJava compileScala compileTestJava compileTestScala spotlessScalaCheck checkstyleMain checkstyleTest spotbugsMain rat --profile --no-daemon --continue -PxmlSpotBugsReport=true'
+        	}
 
-	stage('BuildJar') {
-	    gradle 'jar'
-	}
-	stage('BuildSourceJar'){
-	    gradle 'srcJar'
-	}
+        	stage('Test') {
+        	    sh 'gradle unitTest --profile --no-daemon --continue -PtestLoggingEvents=started,passed,skipped,failed'
+        	}
+
+        	stage('BuildJar') {
+        	    sh 'gradle jar'
+        	}
+        	stage('BuildSourceJar'){
+        	    sh 'gradle srcJar'
+        	}
+    }
 }
