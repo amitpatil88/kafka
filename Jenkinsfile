@@ -14,8 +14,6 @@
 // limitations under the License.
 
 
-checkout scm
-
 def gradle(command) {
 	sh "./gradlew ${command}"
 }
