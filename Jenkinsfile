@@ -1,7 +1,5 @@
-def gradle(command) {
-	sh "../gradlew ${command}"
-}
-
-node {
-	./jenkins.sh
+checkout scm
+stage "Kafka Build"
+dir ('Kafka Build') { 
+    sh('jenkins.sh')
 }
