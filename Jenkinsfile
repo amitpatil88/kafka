@@ -1,5 +1,7 @@
-checkout scm
-stage "Kafka Build"
-dir ('Kafka Build') { 
-    sh('jenkins.sh')
+def gradle(command) {
+	sh "./gradlew ${command}"
+}
+
+node {
+	gradle 'clean build'
 }
