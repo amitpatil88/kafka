@@ -13,10 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
+checkout scm
+
 def gradle(command) {
 	sh "./gradlew ${command}"
 }
 
 node {
-	gradle 'clean build'
+	stage('SCM Checkout') {
+	    checkout scm
+	}
+	stage('build') {
+	    gradle 'clean build'
+	}
 }
