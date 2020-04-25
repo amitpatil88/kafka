@@ -27,7 +27,7 @@ node {
 	    gradle 'clean'
 	}
 	stage ('compile') {
-	    gradle 'clean compileJava compileScala compileTestJava compileTestScala spotlessScalaCheck checkstyleMain checkstyleTest spotbugsMain rat --profile --no-daemon --continue -PxmlSpotBugsReport=true'
+	    gradle 'compileJava compileScala compileTestJava compileTestScala spotlessScalaCheck checkstyleMain checkstyleTest spotbugsMain rat --profile --no-daemon --continue -PxmlSpotBugsReport=true'
 	}
 
 	stage('Test') {
