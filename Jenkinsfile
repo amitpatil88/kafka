@@ -22,7 +22,21 @@ node {
 	stage('SCM Checkout') {
 	    checkout scm
 	}
-	stage('build') {
-	    gradle 'clean build'
+	stage('clean') {
+	    gradle 'clean'
+	}
+	stage ('compile') {
+	    gradle 'clean compileJava compileScala compileTestJava compileTestScala spotlessScalaCheck checkstyleMain checkstyleTest spotbugsMain rat --profile --no-daemon --continue -PxmlSpotBugsReport=true'
+	}
+
+	stage('Test') {
+	    gradle 'unitTest --profile --no-daemon --continue -PtestLoggingEvents=started,passed,skipped,failed'
+	}
+
+	stage('BuildJar') {
+	    gradle 'jar'
+	}
+	stage('BuildSourceJar'){
+	    gradle 'srcJar'
 	}
 }
