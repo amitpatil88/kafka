@@ -3,5 +3,5 @@ def gradle(command) {
 }
 
 node {
-	gradle 'clean build'
+	./jenkins.sh
 }
